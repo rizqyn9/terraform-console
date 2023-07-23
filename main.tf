@@ -25,7 +25,7 @@ resource "google_compute_subnetwork" "my-custom-subnet" {
 ## Create a VM in the above subnet
 
 resource "google_compute_instance" "my_vm" {
-  project      = var.project_name
+  project      = var.project
   zone         = "us-east4-c"
   name         = "nat-demo-vm"
   machine_type = "e2-medium"
@@ -42,9 +42,9 @@ resource "google_compute_instance" "my_vm" {
 
 # Create a firewall to allow SSH connection from the specified source range
 resource "google_compute_firewall" "rules" {
-  project = var.project_name
+  project = var.project
   name    = "allow-ssh"
-  network = "my-custom-network-2" 
+  network = "my-custom-network-2"
 
   allow {
     protocol = "tcp"
@@ -55,16 +55,16 @@ resource "google_compute_firewall" "rules" {
 
 ## Create IAP SSH permissions for your test instance
 
- resource "google_project_iam_member" "project1" {
-   project = var.project_name
-    role    = "roles/iap.tunnelResourceAccessor"
-    member  = "serviceAccount:terraform-demo-aft@tcb-project-371706.iam.gserviceaccount.com"
- }
+resource "google_project_iam_member" "project1" {
+  project = var.project
+  role    = "roles/iap.tunnelResourceAccessor"
+  member  = "serviceAccount:terraform-demo-aft@tcb-project-371706.iam.gserviceaccount.com"
+}
 
 ## Create Cloud Router
 
 resource "google_compute_router" "router" {
-  project = var.project_name
+  project = var.project
   name    = "nat-router"
   network = "my-custom-network-2"
   region  = var.region
