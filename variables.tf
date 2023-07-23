@@ -10,8 +10,8 @@ variable "zone" {
   description = "The GCP zone to deploy to."
 }
 
-variable "credentials_file" {
-  default = "./rdev-lab.json"
+variable "credentials" {
+  description = "base64 google credentials"
 }
 
 variable "env" {
